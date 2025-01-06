@@ -19,9 +19,15 @@ async def main():
 
     # Store them in a dictionary (both title and id)
     for chat in chats:
-        chat_ids = chat.id
+        chat_ids[chat.title] = chat.id
         
-    print(chat_ids)
+    # Fetch messages from each chat
+    for chat_tittle, chat_id in chat_ids.items():
+        messages = await client.get_messages(chat_id)
+        for message in messages:
+
+            # Insert logic to parse and store messages in database here
+            print(message.text)
 
 with client:
     client.loop.run_until_complete(main())
