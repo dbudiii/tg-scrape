@@ -36,16 +36,16 @@ async def main():
 
     # Get all chat ids
     chats = await client.get_dialogs()
-    chat_ids = {}
+    chat_info = {}
 
     # Store them in a dictionary (both title and id)
-    # May need to update this and the above so that we are storing both the id and title as values in the dictionary
     for chat in chats:
-        chat_ids[chat.title] = chat.id
-        
+        chat_info[chat.id] = {
+            'title': chat.title,
+        }
+
     # Fetch messages from each chat
-    # Need to update this if we are updating the dictionary pulls above
-    for chat_title, chat_id in chat_ids.items():
+    for chat_id, chat_data in chat_info.items():
         messages = await client.get_messages(chat_id, limit=100)
         for message in messages:
 
@@ -57,7 +57,7 @@ async def main():
                 cursor.execute('''
                                INSERT INTO tokens (chat_name, chat_id, message_text, token_symbol)
                                VALUES (?, ?, ?, ?)
-                               ''', (chat_title, chat_id, message.text,token[1:]))
+                               ''', (chat_data['title'], chat_id, message.text,token[1:]))
                 conn.commit()
 
             rows = cursor.fetchall()
