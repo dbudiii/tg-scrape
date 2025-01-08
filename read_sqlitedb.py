@@ -14,5 +14,13 @@ results = cursor.fetchall()
 for result in results:
     print(result)
 
+# # Get column names
+# cursor.execute("PRAGMA table_info(tokens)")
+# columns = cursor.fetchall()
+
+# # Print column details
+# for column in columns:
+#     print(f"Column ID: {column[0]}, Name: {column[1]}, Type: {column[2]}")
+
 # Close the connection
 conn.close()
