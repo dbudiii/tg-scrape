@@ -4,9 +4,9 @@ To install cryptg: pip install telethon-tgcrypto
 
 Telegram Scraper Bot: Bot will scrape for tokens in specific telegram chats and pull specific financial data to be displayed. It will look to pull:
 
-- Token name
-- Token Symbol
-- Token address
+- Token name [DONE]
+- Token Symbol [DONE]
+- Token address 
 - Number of times it has been mentioned in chats
 - FDV
 - Liquidity
@@ -17,3 +17,5 @@ Telegram Scraper Bot: Bot will scrape for tokens in specific telegram chats and 
 
 Optional:
 - Sentiment analysis
+
+Todo: Start pulling financial data for tokens using API
