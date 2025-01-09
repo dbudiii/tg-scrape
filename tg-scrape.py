@@ -7,6 +7,24 @@ import asyncio
 import sqlite3
 import re
 
+# Create the tokens table if it doesn't exist. Will add more columns later on
+def create_new_table(cursor):
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS tokens (
+        id INTEGER PRIMARY KEY,
+        chat_name TEXT,
+        chat_id INTEGER,
+        message_text TEXT,
+        token_symbol TEXT
+        )
+        ''')
+
+# Drop the tokens table
+def drop_table(cursor):
+    cursor.execute('''
+        DROP TABLE IF EXISTS tokens
+        ''')
+
 # Replace your API ID and API Hash
 api_id = config.api_id
 api_hash = config.api_hash
@@ -14,18 +32,6 @@ api_hash = config.api_hash
 # Connect to the SQLite database
 conn = sqlite3.connect('tg-scrape.db')
 cursor = conn.cursor()
-
-# Create the tokens table if it doesn't exist. Will add more columns later on
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS tokens (
-        id INTEGER PRIMARY KEY,
-        chat_name TEXT,
-        chat_id INTEGER,
-        message_text TEXT,
-        token_symbol TEXT
-    )
-''')
-
 
 # Create a TelegramClient
 client = TelegramClient('tg-scrape', api_id, api_hash)
