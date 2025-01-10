@@ -25,6 +25,17 @@ def drop_table(cursor):
         DROP TABLE IF EXISTS tokens
         ''')
 
+# Inserting data into table
+def insert_data(cursor, chat_name, chat_id, message_text, token_symbol):
+    try:
+        cursor.execute('''
+                        INSERT INTO tokens (chat_name, chat_id, message_text, token_symbol)
+                        VALUES (?, ?, ?, ?)
+                        ''', (chat_name, chat_id, message_text,token_symbol))
+        conn.commit()
+    except sqlite3.Error as e:
+        print(f"Error inserting data: {e}")
+
 # Replace your API ID and API Hash
 api_id = config.api_id
 api_hash = config.api_hash
@@ -60,17 +71,17 @@ async def main():
 
             # Store token mentions into database
             for token in token_mentions:
-                cursor.execute('''
-                               INSERT INTO tokens (chat_name, chat_id, message_text, token_symbol)
-                               VALUES (?, ?, ?, ?)
-                               ''', (chat_data['title'], chat_id, message.text,token[1:]))
-                conn.commit()
+                insert_data(cursor, chat_data['title'], chat_id, message.text, token[1:])
 
+            # Print the results
             rows = cursor.fetchall()
             for row in rows:
                 print(row)
 
             await asyncio.sleep(1)
+
+    # Close the database connection
+    conn.close()
 
 with client:
     client.loop.run_until_complete(main())
