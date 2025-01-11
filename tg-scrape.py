@@ -43,8 +43,8 @@ def print_data(cursor):
         print(row)
 
 # Replace your API ID and API Hash
-api_id = config.api_id
-api_hash = config.api_hash
+api_id = config.telegram_api_id
+api_hash = config.telegram_api_hash
 
 # Connect to the SQLite database
 conn = sqlite3.connect('tg-scrape.db')
