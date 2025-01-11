@@ -9,13 +9,14 @@ Telegram Scraper Bot: Bot will scrape for tokens in specific telegram chats and 
 - Token address 
 - Number of times it has been mentioned in chats
 - FDV
+
+
+Optional:
 - Liquidity
 - Pair created for how long
 - Transactions for the past 5min, 1 hour, 6 hour, 24 hour
 - Volume for the past 5min, 1 hour, 6 hour, 24 hour
 - Performance for the past 5min, 1 hour, 6 hour, 24 hour
-
-Optional:
 - Sentiment analysis
 
 Todo: Start pulling financial data for tokens using API
