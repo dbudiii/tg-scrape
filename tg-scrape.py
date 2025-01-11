@@ -36,6 +36,12 @@ def insert_data(cursor, chat_name, chat_id, message_text, token_symbol):
     except sqlite3.Error as e:
         print(f"Error inserting data: {e}")
 
+# Printing results of table
+def print_data(cursor):
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row)
+
 # Replace your API ID and API Hash
 api_id = config.api_id
 api_hash = config.api_hash
@@ -43,6 +49,9 @@ api_hash = config.api_hash
 # Connect to the SQLite database
 conn = sqlite3.connect('tg-scrape.db')
 cursor = conn.cursor()
+
+# Create table tokens
+create_new_table(cursor)
 
 # Create a TelegramClient
 client = TelegramClient('tg-scrape', api_id, api_hash)
@@ -67,16 +76,14 @@ async def main():
         for message in messages:
 
             # Parse the messages and extract token mentions starting with "$"
-            token_mentions = re.findall(r'\$\w+', message.text)
+            extracted_tokens = re.findall(r'\$\w+', message.text)
 
             # Store token mentions into database
-            for token in token_mentions:
+            for token in extracted_tokens:
                 insert_data(cursor, chat_data['title'], chat_id, message.text, token[1:])
 
             # Print the results
-            rows = cursor.fetchall()
-            for row in rows:
-                print(row)
+            print_data(cursor)
 
             await asyncio.sleep(1)
 
