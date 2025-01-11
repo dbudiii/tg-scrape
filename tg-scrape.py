@@ -25,6 +25,34 @@ def drop_table(cursor):
         DROP TABLE IF EXISTS tokens
         ''')
 
+# [TODO]Pull token address from Helius API
+def get_token_address(token_symbol):
+    try: 
+        pass 
+    except: 
+        pass
+
+# [TODO]Pull token supply from Helius API
+def get_token_supply(token_symbol):
+    try: 
+        pass 
+    except: 
+        pass
+
+# [TODO]Pull token price
+def get_token_price(token_symbol):
+    try: 
+        pass 
+    except: 
+        pass
+
+# [TODO]Calculate token FDV
+def calculate_token_fdv(token_symbol):
+    try: 
+        pass 
+    except: 
+        pass
+
 # Inserting data into table
 def insert_data(cursor, chat_name, chat_id, message_text, token_symbol):
     try:
@@ -43,8 +71,9 @@ def print_data(cursor):
         print(row)
 
 # Replace your API ID and API Hash
-api_id = config.telegram_api_id
-api_hash = config.telegram_api_hash
+tg_api_id = config.tg_api_id
+tg_api_hash = config.tg_api_hash
+hel_api_key = config.hel_api_key
 
 # Connect to the SQLite database
 conn = sqlite3.connect('tg-scrape.db')
@@ -54,7 +83,7 @@ cursor = conn.cursor()
 create_new_table(cursor)
 
 # Create a TelegramClient
-client = TelegramClient('tg-scrape', api_id, api_hash)
+client = TelegramClient('tg-scrape', tg_api_id, tg_api_hash)
 
 # Authenticate the client
 async def main():
