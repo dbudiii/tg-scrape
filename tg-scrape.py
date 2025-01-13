@@ -35,21 +35,22 @@ def get_token_address(token_symbol):
 # [TODO]Pull token supply from Helius API
 def get_token_supply(token_symbol):
     try: 
-        pass 
+        return token_supply
     except: 
         pass
 
 # [TODO]Pull token price
 def get_token_price(token_symbol):
     try: 
-        pass 
+        return token_price
     except: 
         pass
 
 # [TODO]Calculate token FDV
 def calculate_token_fdv(token_symbol):
     try: 
-        pass 
+        token_fdv = token_supply * token_price
+        return token_fdv
     except: 
         pass
 
