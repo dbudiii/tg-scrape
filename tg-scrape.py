@@ -120,8 +120,19 @@ def calculate_token_fdv(token_symbol, token_price, token_supply):
     try: 
         token_fdv = token_price * token_supply
         return token_fdv
-    except: 
-        pass
+    
+    except requests.exceptions.RequestException as e:
+        # Handle request exception 
+        print(f"Error: {e}")
+        return None
+
+    except ZeroDivisionError:
+        print("Error: Division by zero")
+        return None
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
 
 # Inserting data into table
 def insert_data(cursor, chat_name, chat_id, message_text, token_symbol):
