@@ -26,13 +26,33 @@ def drop_table(cursor):
         DROP TABLE IF EXISTS tokens
         ''')
 
-# [TODO]Pull token address from Helius API
+# Pull token address from Helius API
 def get_token_address(token_symbol):
     try: 
         # Set API endpoint and parameters
         endpoint = f"https://mainnet.helius-rpc.com/?api-key={hel_api_key}"
 
-        return token_address
+        # Set request package
+        response = requests.post(
+            endpoint,
+            headers = {"Content-Type": "application/json"},
+            json = {
+                "jsonrpc": "2.0",
+                "id": "get_token_address",
+                "method": "getAsset",
+                "params": {"symbol": token_symbol}
+            }
+        )
+
+        # Check if response was sucessful
+        if response.status_code == 200:
+            # Parse response
+            data = response.json()
+
+            # Extract token balance from response
+            token_address = data["result"]["id"]
+
+            return token_address
     
     except requests.exceptions.RequestException as e: 
         # Handle request exception 
@@ -116,7 +136,7 @@ def get_token_price(token_address):
         return None
 
 # Calculate token FDV
-def calculate_token_fdv(token_symbol, token_price, token_supply):
+def calculate_token_fdv(token_price, token_supply):
     try: 
         token_fdv = token_price * token_supply
         return token_fdv
@@ -190,6 +210,14 @@ async def main():
 
             # Store token mentions into database
             for token in extracted_tokens:
+                
+                # Get token address
+                address = get_token_address(token[1:])
+
+                # Calculate token FDV
+                fdv = calculate_token_fdv(address, get_token_price(address), get_token_supply(address))
+                print(fdv)
+
                 insert_data(cursor, chat_data['title'], chat_id, message.text, token[1:])
 
             # Print the results
