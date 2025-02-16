@@ -1,6 +1,26 @@
 # Token functions
 import requests
+from telethon.sync import TelegramClient
+import asyncio
 
+
+### Main Functions ###
+
+# Fetch chat dialogs, store them in messages list, and return messages list. We use get_messages to have more control over retrieval and filtering of messages
+async def fetch_messages(client):
+    try:
+        chats = await client.get_dialogs() 
+        messages = []
+        for chat in chats:
+            chat_messages = await client.get_messages(chat.id, limit=100)
+            messages.extend(chat_messages)
+        return messages
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+### Token API Functions ###
 # Pull token address from Helius API [UPDATE SYMBOL TO ADDRESS - UNIVERSAL]
 def get_token_address(token_symbol):
     try: 
