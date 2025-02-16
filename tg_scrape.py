@@ -3,7 +3,8 @@
 import config
 import DB_Connection
 import DB_Schema
-import DB_Actions
+import DB_Actions 
+from token_functions import *
 from telethon.sync import TelegramClient
 import asyncio
 import sqlite3
@@ -21,21 +22,10 @@ client = TelegramClient('tg-scrape', tg_api_id, tg_api_hash)
 async def main():
     await client.start()
 
-    # Get all chat ids
-    chats = await client.get_dialogs()
-    chat_info = {}
+    # Fetch messages from each chat and store them in message variable to set up for parsing. 
+    messages = await fetch_messages(client)
 
-    # Store them in a dictionary (both title and id)
-    for chat in chats:
-        chat_info[chat.id] = {
-            'title': chat.title,
-        }
-
-    # Fetch messages from each chat
-    for chat_id, chat_data in chat_info.items():
-        messages = await client.get_messages(chat_id, limit=100)
-        for message in messages:
-
+    for message in messages:
             # Parse the messages and extract token mentions starting with "$"
             extracted_tokens = re.findall(r'\$\w+', message.text)
 
