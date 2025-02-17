@@ -1,9 +1,9 @@
 # tg-scrape.py
 
 import config
-import DB_Connection
-import DB_Schema
-import DB_Actions 
+from .DB.DB_Connection import *
+from DB.DB_Schema import *
+from DB.DB_Actions import * 
 from token_functions import *
 from telethon.sync import TelegramClient
 import asyncio
@@ -26,15 +26,13 @@ async def main():
     messages = await fetch_messages(client)
 
     for message in messages:
-            # Parse the messages and extract token mentions starting with "$"
-            extracted_tokens = re.findall(r'\$\w+', message.text)
+            # Parse the messages and extract token addresses and put into list
+            coin_addresses = extract_addresses(message)
 
-            # Store token mentions into database
-            for token in extracted_tokens:
-                
-                # Get token address
-                address = get_token_address(token[1:])
-
+    # Connect to the database from the DB_Connection file and create the table    
+    cursor = get_connection()
+    
+    
                 # Calculate token FDV
                 fdv = calculate_token_fdv(address, get_token_price(address), get_token_supply(address))
                 print(fdv)
