@@ -1,5 +1,5 @@
 # Token functions
-import requests
+import re
 from telethon.sync import TelegramClient
 import asyncio
 
@@ -19,6 +19,9 @@ async def fetch_messages(client):
     except Exception as e:
         print(f"Error: {e}")
 
+def extract_addresses(message):
+    solana_regex = r'^[1-9A-HJ-NP-Za-km-z]{32}$'
+    return re.findall(solana_regex, message)
 
 ### Token API Functions ###
 # Pull token address from Helius API [UPDATE SYMBOL TO ADDRESS - UNIVERSAL]
