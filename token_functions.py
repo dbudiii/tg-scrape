@@ -1,5 +1,6 @@
-# Token functions
+# coin functions
 import re
+import requests
 from telethon.sync import TelegramClient
 import asyncio
 
@@ -23,9 +24,9 @@ def extract_addresses(message):
     solana_regex = r'^[1-9A-HJ-NP-Za-km-z]{32}$'
     return re.findall(solana_regex, message)
 
-### Token API Functions ###
-# Pull token address from Helius API [UPDATE SYMBOL TO ADDRESS - UNIVERSAL]
-def get_token_address(token_symbol):
+### coin API Functions ###
+# Pull coin address from Helius API
+def get_coin_symbol(coin_address):
     try: 
         # Set API endpoint and parameters
         endpoint = f"https://mainnet.helius-rpc.com/?api-key={hel_api_key}"
@@ -36,9 +37,9 @@ def get_token_address(token_symbol):
             headers = {"Content-Type": "application/json"},
             json = {
                 "jsonrpc": "2.0",
-                "id": "get_token_address",
+                "id": "get_coin_symbol",
                 "method": "getAsset",
-                "params": {"symbol": token_symbol}
+                "params": {"id": f"{coin_address}"}
             }
         )
 
@@ -47,18 +48,18 @@ def get_token_address(token_symbol):
             # Parse response
             data = response.json()
 
-            # Extract token balance from response
-            token_address = data["result"]["id"]
+            # Extract coin symbol from response
+            coin_symbol = data["result"]["content"]["metadata"]["symbol"]
 
-            return token_address
+            return coin_symbol
     
     except requests.exceptions.RequestException as e: 
         # Handle request exception 
         print(f"Error: {e}")
         return None
 
-# Pull token supply from Helius API
-def get_token_supply(token_address):
+# Pull coin supply from Helius API [DONE]
+def get_coin_supply(coin_address):
     try: 
         # Set API endpoint 
         endpoint = f"https://mainnet.helius-rpc.com/?api-key={hel_api_key}"
@@ -69,9 +70,9 @@ def get_token_supply(token_address):
             headers = {"Content-Type": "application/json"},
             json = {
                 "jsonrpc": "2.0",
-                "id": "get_token_supply",
+                "id": "get_coin_supply",
                 "method": "getAsset",
-                "params": {"id": token_address}
+                "params": {"id": f"{coin_address}"}
             }
         )
 
@@ -80,10 +81,10 @@ def get_token_supply(token_address):
             # Parse response
             data = response.json()
 
-            # Extract token balance from response
-            token_supply = data["result"]["supply"]["print_max_supply"]
+            # Extract coin balance from response
+            coin_supply = data["result"]["supply"]["print_max_supply"]
 
-            return token_supply
+            return coin_supply
     
         else:
             # Handle API error
@@ -95,8 +96,8 @@ def get_token_supply(token_address):
         print(f"Error: {e}")
         return None
 
-# Pull token price
-def get_token_price(token_address):
+# Pull coin price
+def get_coin_price(coin_address):
     try: 
         # Set API endpoint
         endpoint = f"https://mainnet.helius-rpc.com/?api-key={hel_api_key}"
@@ -107,9 +108,9 @@ def get_token_price(token_address):
             headers = {"Content-Type": "application/json"},
             json = {
                 "jsonrpc": "2.0",
-                "id": "get_token_price",
+                "id": "get_coin_price",
                 "method": "getAsset",
-                "params": {"id": token_address}
+                "params": {"id": f"{coin_address}"}
             }
         )
 
@@ -118,10 +119,10 @@ def get_token_price(token_address):
             # Parse response
             data = response.json()
 
-            # Extract token balance from response
-            token_price = data["result"]["price"] # Confirm whether this is the right path
+            # Extract coin balance from response
+            coin_price = data["result"]["price"] # Confirm whether this is the right path
         
-            return token_price
+            return coin_price
         
         else:
             # Handle API error
@@ -133,11 +134,11 @@ def get_token_price(token_address):
         print(f"Error: {e}")
         return None
 
-# Calculate token FDV
-def calculate_token_fdv(token_price, token_supply):
+# Calculate coin FDV
+def calculate_coin_fdv(coin_price, coin_supply):
     try: 
-        token_fdv = token_price * token_supply
-        return token_fdv
+        coin_fdv = coin_price * coin_supply
+        return coin_fdv
     
     except requests.exceptions.RequestException as e:
         # Handle request exception 
