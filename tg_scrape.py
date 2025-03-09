@@ -29,9 +29,13 @@ async def main():
         # Parse the messages and extract token addresses and put into list
         coin_addresses = extract_addresses(message)
 
-    test_list = []
+    coin_data_dict = {}
+    # [Need to store the coin symbols into the database, pull the financial data, then display***]
     for address in coin_addresses:
-        get_coin_symbol(address)
+        coin_data = get_coin_data(address)
+        coin_data_dict[address] = coin_data
+    
+    print(coin_data_dict)
 
 with client:
     client.loop.run_until_complete(main())

@@ -152,3 +152,17 @@ def calculate_coin_fdv(coin_price, coin_supply):
     except Exception as e:
         print(f"Error: {e}")
         return None
+
+# Get above coin data
+def get_coin_data(coin_address):
+    coin_symbol = get_coin_symbol(coin_address)
+    coin_supply = get_coin_supply(coin_address)
+    coin_price = get_coin_price(coin_address)
+    coin_fdv = calculate_coin_fdv(coin_price, coin_supply)
+    return {
+        'address': coin_address, 
+        'symbol': coin_symbol,
+        'supply': coin_supply,
+        'price': coin_price,
+        'fdv':coin_fdv
+    }
