@@ -3,7 +3,10 @@ import re
 import requests
 from telethon.sync import TelegramClient
 import asyncio
+import config
 
+### Global Variables ###
+hel_api_key = config.hel_api_key
 
 ### Main Functions ###
 
@@ -21,6 +24,8 @@ async def fetch_messages(client):
         print(f"Error: {e}")
 
 def extract_addresses(message):
+    if not isinstance(message, str) or message is None:
+        return []
     solana_regex = r'^[1-9A-HJ-NP-Za-km-z]{32}$'
     return re.findall(solana_regex, message)
 
