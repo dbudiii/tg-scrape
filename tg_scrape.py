@@ -24,16 +24,20 @@ async def main():
     # Fetch messages from each chat and store them in message variable to set up for parsing. 
     messages = await fetch_messages(client)
 
+    coin_addresses = []
     for message in messages:
+        print(message.text)
         # Parse the messages and extract token addresses and put into list
-        coin_addresses = extract_addresses(message.text)
+        addresses = extract_addresses(message.text)
+        coin_addresses.extend(addresses)
+
+    print(coin_addresses)
 
     coin_data_dict = {}
     # [Need to store the coin symbols into the database, pull the financial data, then display***]
     for address in coin_addresses:
         coin_data = get_coin_data(address)
         coin_data_dict[address] = coin_data
-    
 
 with client:
     client.loop.run_until_complete(main())

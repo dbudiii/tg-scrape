@@ -26,7 +26,7 @@ async def fetch_messages(client):
 def extract_addresses(message):
     if not isinstance(message, str) or message is None:
         return []
-    solana_regex = r'^[1-9A-HJ-NP-Za-km-z]{32}$'
+    solana_regex = r'^[1-9A-HJ-NP-Za-km-z]{32,44}$'
     return re.findall(solana_regex, message)
 
 ### coin API Functions ###
