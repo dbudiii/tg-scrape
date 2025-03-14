@@ -1,6 +1,6 @@
 # Check DB
 
-from DB.DB_Connection import *
+from DB_Connection import *
 
 # Get connection
 cursor = get_connection()
