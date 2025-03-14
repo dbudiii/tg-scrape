@@ -6,5 +6,6 @@ def create_table(cursor, table_name):
         CREATE TABLE IF NOT EXISTS {} (
         id INTEGER PRIMARY KEY,
         token_address TEXT
+        timestamp TEXT
         )
         '''.format(table_name))
