@@ -16,7 +16,7 @@ async def fetch_messages(client):
         chats = await client.get_dialogs() 
         messages = []
         for chat in chats:
-            chat_messages = await client.get_messages(chat.id, limit=100)
+            chat_messages = await client.get_messages(chat.id, limit=500)
             messages.extend(chat_messages)
         return messages
 
