@@ -22,16 +22,13 @@ async def main():
     # Fetch messages from each chat and store them in message variable to set up for parsing. 
     messages = await fetch_messages(client)
 
-    coin_data = []
+    coin_data = {}
     for message in messages:
         # Parse the messages, extract token address, add address and timestamp to coin_data dict
         addresses = extract_addresses(message.text)
         if addresses:
             for address in addresses:
-                coin_data.append({
-                    'address': address,
-                    'timestamp': message.date
-                })
+                coin_data[address] = message.date
 
 if __name__ == '__main__':
     # Create connection to database
