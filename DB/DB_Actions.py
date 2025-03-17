@@ -28,11 +28,11 @@ def read_table(cursor, table_name):
         print(f"Error executing query: {e}")
         return None
 
-# Inserting data into table through execute_query [UPDATE]
+# Inserting data into table through execute_query
 def insert_data(cursor, address, timestamp):
     try:
         cursor.execute('''
-                    INSERT INTO tokens (id, token_address, timestamp)
+                    INSERT OR IGNORE INTO tokens (id, token_address, timestamp)
                     VALUES (NULL, ?, ?)
                     ''', (address, timestamp))
     except sqlite3.Error as e:
