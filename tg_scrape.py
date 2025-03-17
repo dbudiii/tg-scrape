@@ -28,9 +28,9 @@ async def main():
         addresses = extract_addresses(message.text)
         if addresses:
             for address in addresses:
-                coin_data[address] = message.date
+                timestamp = message.date
+                coin_data[address] = timestamp
 
-if __name__ == '__main__':
     # Create connection to database
     cursor = get_connection()
 
@@ -38,10 +38,16 @@ if __name__ == '__main__':
     table_name = 'tokens'
     create_table(cursor, table_name)
 
-    # Execute main loop
-    with client:
-        client.loop.run_until_complete(main())
+    # Insert data into database
+    for address, timestamp in coin_data.items():
+        insert_data(cursor, address, timestamp)
 
     # Close connection
     conn.commit()
     conn.close()
+
+if __name__ == '__main__':
+
+    # Execute main loop
+    with client:
+        client.loop.run_until_complete(main())
