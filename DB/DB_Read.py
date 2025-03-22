@@ -15,10 +15,16 @@ cursor.execute("PRAGMA table_info(tokens)")
 columns = cursor.fetchall()
 print("Column info: ", columns)
 
-# View contents of table
-cursor.execute("SELECT * FROM tokens")
-data = cursor.fetchall()
-print("Table contents: ", data)
+# View contents of table in chronological order
+cursor.execute('''   
+    SELECT * FROM tokens
+    ORDER BY timestamp ASC
+    ''')
 
+data = cursor.fetchall()
+print("Table contents: \n") 
+for row in data:
+    print(row)
+    
 # Close the database connection
 conn.close()
