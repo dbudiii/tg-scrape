@@ -42,6 +42,8 @@ async def main():
     for address, timestamp in coin_data.items():
         insert_data(cursor, address, timestamp)
 
+    get_token_counts(cursor, table_name)
+
     # Close connection
     conn.commit()
     conn.close()
