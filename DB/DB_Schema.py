@@ -1,5 +1,5 @@
 # DB Schema
-from DB_Connection import *
+from .DB_Connection import *
 
 # Create the tokens schema if it doesn't exist
 def create_table(cursor, table_name):
