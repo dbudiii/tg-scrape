@@ -1,8 +1,10 @@
 # tg-scrape
 
+[Finished]
+
 To install cryptg: pip install telethon-tgcrypto
 
-Telegram Scraper Bot: Bot will scrape for token addresses in specific telegram chats and pull specific financial data to be displayed. It will look to pull:
+Telegram Scraper: Script will scrape for token addresses across all telegram chats and show the top mentions to show popularity across your chat groups. It will look to pull:
 - Token address
 - Timestamp
 - Number of times the token has been mentioned across all chats
