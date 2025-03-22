@@ -16,7 +16,7 @@ async def fetch_messages(client):
         chats = await client.get_dialogs() 
         messages = []
         for chat in chats:
-            chat_messages = await client.get_messages(chat.id, limit=500)
+            chat_messages = await client.get_messages(chat.id, limit=200)
             messages.extend(chat_messages)
         return messages
 
@@ -26,7 +26,7 @@ async def fetch_messages(client):
 def extract_addresses(message):
     if not isinstance(message, str) or message is None:
         return []
-    solana_regex = r'^[1-9A-HJ-NP-Za-km-z]{32,44}$'
+    solana_regex = r'[1-9A-HJ-NP-Za-km-z]{32,44}'
     return re.findall(solana_regex, message)
 
 ### coin API Functions ###
