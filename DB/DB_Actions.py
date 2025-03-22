@@ -28,7 +28,8 @@ def read_table(cursor, table_name):
         print(f"Error executing query: {e}")
         return None
 
-# Inserting data into table through execute_query
+# Inserting data into table; checks that the address and timestamp are unique to create a new entry so
+# that the data is not duplicated for every time we run it
 def insert_data(cursor, address, timestamp):
     try:
         cursor.execute('''
@@ -37,3 +38,16 @@ def insert_data(cursor, address, timestamp):
                     ''', (address, timestamp))
     except sqlite3.Error as e:
         print(f"Error inserting data: {e}")
+
+def get_token_counts(cursor, table_name):
+    cursor.execute('''
+        SELECT token_address, COUNT(*) as mention_count
+        FROM tokens
+        GROUP BY token_address
+        ORDER BY mention_count DESC
+        LIMIT 5
+    ''')
+
+    results = cursor.fetchall()
+    for address, count in results:
+        print(f"Address: {address}, Mention Count: {count}")
